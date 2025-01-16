@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Titans Demonstration Platform</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .agent-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .visualization {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Titans Demonstration Platform</h1>
+        
+        <div class="agent-grid">
+            <div class="agent-card">
+                <h2>OpenAI Agent</h2>
+                <p>Neural Long-Term Memory Module</p>
+                <button onclick="runDemonstration('openai')">Run Demo</button>
+            </div>
+            <div class="agent-card">
+                <h2>Anthropic Agent</h2>
+                <p>Memory as Context (MAC)</p>
+                <button onclick="runDemonstration('anthropic')">Run Demo</button>
+            </div>
+            <div class="agent-card">
+                <h2>Mistral Agent</h2>
+                <p>Memory as Gate (MAG)</p>
+                <button onclick="runDemonstration('mistral')">Run Demo</button>
+            </div>
+            <div class="agent-card">
+                <h2>Groq Agent</h2>
+                <p>Memory as Layer (MAL)</p>
+                <button onclick="runDemonstration('groq')">Run Demo</button>
+            </div>
+            <div class="agent-card">
+                <h2>Gemini Agent</h2>
+                <p>Experimental Validation</p>
+                <button onclick="runDemonstration('gemini')">Run Demo</button>
+            </div>
+            <div class="agent-card">
+                <h2>Cohere Agent</h2>
+                <p>Innovations</p>
+                <button onclick="runDemonstration('cohere')">Run Demo</button>
+            </div>
+            <div class="agent-card">
+                <h2>Emergence Agent</h2>
+                <p>Key Takeaways and Analysis</p>
+                <button onclick="runDemonstration('emergence')">Run Demo</button>
+            </div>
+        </div>
+
+        <div class="visualization" id="combinedVisualization">
+            <h2>Combined Performance Visualization</h2>
+            <div id="plotlyViz"></div>
+        </div>
+    </div>
+
+    <script>
+        async function runDemonstration(agentName) {
+            try {
+                const response = await fetch(`/demonstrate?agent=${agentName}`);
+                const data = await response.json();
+                console.log(`${agentName} demonstration:`, data);
+            } catch (error) {
+                console.error('Error running demonstration:', error);
+            }
+        }
+
+        async function loadCombinedVisualization() {
+            try {
+                const response = await fetch('/visualization');
+                const data = await response.json();
+                Plotly.newPlot('plotlyViz', data);
+            } catch (error) {
+                console.error('Error loading visualization:', error);
+            }
+        }
+
+        // Load the combined visualization when the page loads
+        window.addEventListener('load', loadCombinedVisualization);
+    </script>
+</body>
+</html>
