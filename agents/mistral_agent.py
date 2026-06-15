@@ -1,5 +1,9 @@
 from .base_agent import TitansAgent
-from mistralai.client import MistralClient
+try:
+    from mistralai.client import MistralClient
+except ImportError:
+    # mistralai>=1.0.0 exposes `Mistral` instead of `MistralClient`.
+    from mistralai import Mistral as MistralClient
 import numpy as np
 import plotly.graph_objects as go
 from typing import Dict, Any, List
@@ -88,11 +92,18 @@ class MemoryGateAgent(TitansAgent):
             {"role": "system", "content": "You are a Memory Gating expert."},
             {"role": "user", "content": user_input}
         ]
-        response = self.client.chat(
-            model="mistral-large-latest",
-            messages=messages,
-            safe_mode=False
-        )
+        if hasattr(self.client, "chat") and callable(getattr(self.client, "chat")):
+            response = self.client.chat(
+                model="mistral-large-latest",
+                messages=messages,
+                safe_mode=False
+            )
+        else:
+            response = self.client.chat.complete(
+                model="mistral-large-latest",
+                messages=messages,
+                safe_mode=False
+            )
         return response.choices[0].message.content
         
     async def collaborate(self, other_agent_data: Dict[str, Any]) -> str:
