@@ -1,4 +1,5 @@
 # Titans Demonstration Platform
+<img width="1913" height="1018" alt="image" src="https://github.com/user-attachments/assets/a1207510-6c37-4a2a-93d3-a6dab0139184" />
 
 This project demonstrates ideas from the paper *Titans: Learning to Memorize at Test Time* using seven specialized AI agents and a native desktop interface.
 
